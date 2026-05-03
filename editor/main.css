@@ -1,0 +1,177 @@
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+/* Layout */
+section.layout {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid:
+    "header" auto
+    "main" 1fr
+    "footer" auto
+    / 1fr;
+}
+
+header {
+  grid-area: header;
+}
+
+section.main {
+  grid-area: main;
+  display: grid;
+  grid:
+    "content properties history" auto
+    / 1fr auto auto;
+}
+
+aside e2-collapsible-panel {
+  --panel-padding: 0;
+  height: 100%;
+}
+
+section.content {
+  grid-area: content;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+section.content #editor-canvas {
+  position: absolute;
+}
+
+e2-app[theme="light"] section.content #editor-canvas {
+  border: 1px solid #ccc;
+}
+
+e2-app[theme="dark"] section.content #editor-canvas {
+  border: 1px solid #333;
+}
+
+aside.properties {
+  grid-area: properties;
+}
+
+aside.properties .properties-container {
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+
+aside.history {
+  grid-area: history;
+}
+
+aside.history e2-collapsible-panel {
+  --panel-collapsed-icon: '↩️';
+}
+
+aside.history e2-list-view {
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  --header-visible: 'no';
+}
+
+footer {
+  grid-area: footer;
+}
+
+#settings-editor {
+  width: 60vw;
+  height: 60vh;
+}
+
+/* Theme switch */
+.theme-switch {
+  margin: 5px;
+  position: absolute;
+  right: 0;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.theme-switch input {display:none;}
+
+.theme-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.theme-switch .slider:before {
+  position: absolute;
+  content: attr(data-off);
+  line-height:22px;
+  width: 22px;
+  border-radius: 11px;
+  left: 2px;
+  bottom: 2px;
+  background-color: rgb(240, 240, 240);
+  transition: .4s;
+  text-align: center;
+}
+
+.theme-switch input:checked + .slider {
+  background-color: #27669b;
+}
+
+.theme-switch input:checked + .slider:before {
+  content: attr(data-on);
+  transform: translateX(24px);
+  background-color: rgb(45, 45, 45);
+}
+
+/* Scrollbars */
+*::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+e2-app[theme="light"] *::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background-color: #ffffff;
+}
+
+e2-app[theme="light"] *::-webkit-scrollbar-track:hover,
+e2-app[theme="light"] *::-webkit-scrollbar-track:active {
+  background-color: #ffffff;
+}
+
+e2-app[theme="light"] *::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  background-color: #8E8E8E;
+}
+
+e2-app[theme="light"] *::-webkit-scrollbar-thumb:hover,
+e2-app[theme="light"] *::-webkit-scrollbar-thumb:active {
+  background-color: #BEBEBE;
+}
+
+e2-app[theme="dark"] *::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background-color: #1E1E1E;
+}
+
+e2-app[theme="dark"] *::-webkit-scrollbar-track:hover,
+e2-app[theme="dark"] *::-webkit-scrollbar-track:active {
+  background-color: #1E1E1E;
+}
+
+e2-app[theme="dark"] *::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  background-color: #5F5F5F;
+}
+
+e2-app[theme="dark"] *::-webkit-scrollbar-thumb:hover,
+e2-app[theme="dark"] *::-webkit-scrollbar-thumb:active {
+  background-color: #9E9E9E;
+}

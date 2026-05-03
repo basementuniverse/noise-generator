@@ -1,0 +1,1078 @@
+{
+  "version": 1,
+  "type": "graph-document",
+  "graph": {
+    "nodes": [
+      {
+        "id": "80b21f7d-befa-44f2-8d9c-a6f38506ffd6",
+        "position": {
+          "x": 448,
+          "y": -384
+        },
+        "size": {
+          "x": 192,
+          "y": 160
+        },
+        "label": "Add",
+        "ports": [
+          {
+            "id": "a",
+            "label": "A",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "b",
+            "label": "B",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "output",
+            "label": "Output",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "add",
+          "output": 0
+        }
+      },
+      {
+        "id": "9629c412-ed33-4dc0-a8ea-150b0e6fc112",
+        "position": {
+          "x": -128,
+          "y": -544
+        },
+        "size": {
+          "x": 192,
+          "y": 96
+        },
+        "label": "Constant Number",
+        "ports": [
+          {
+            "id": "value",
+            "label": "Value",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "constant-number",
+          "value": 0,
+          "configuration": {
+            "value": 0
+          }
+        }
+      },
+      {
+        "id": "74c6c7ba-37a2-41b5-9af6-e961078b7995",
+        "position": {
+          "x": -128,
+          "y": -448
+        },
+        "size": {
+          "x": 192,
+          "y": 160
+        },
+        "label": "Multiply",
+        "ports": [
+          {
+            "id": "a",
+            "label": "A",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "b",
+            "label": "B",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "output",
+            "label": "Output",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "multiply",
+          "output": 0
+        }
+      },
+      {
+        "id": "bdfbe1cf-0443-4e94-8837-28a1b82a9594",
+        "position": {
+          "x": 160,
+          "y": -512
+        },
+        "size": {
+          "x": 192,
+          "y": 256
+        },
+        "label": "Perlin",
+        "ports": [
+          {
+            "id": "seed",
+            "label": "Seed",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "x",
+            "label": "X",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "y",
+            "label": "Y",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "z",
+            "label": "Z",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "output",
+            "label": "Output",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "perlin",
+          "output": 0,
+          "noise": null
+        }
+      },
+      {
+        "id": "7accc2aa-4824-448e-8ad2-2cd860ff149b",
+        "position": {
+          "x": 160,
+          "y": -192
+        },
+        "size": {
+          "x": 192,
+          "y": 160
+        },
+        "label": "Multiply",
+        "ports": [
+          {
+            "id": "a",
+            "label": "A",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "b",
+            "label": "B",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "output",
+            "label": "Output",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "multiply",
+          "output": 0
+        }
+      },
+      {
+        "id": "938fc161-64c2-4d3e-93b0-606836392f75",
+        "position": {
+          "x": -128,
+          "y": -192
+        },
+        "size": {
+          "x": 192,
+          "y": 96
+        },
+        "label": "Sine",
+        "ports": [
+          {
+            "id": "input",
+            "label": "Input",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "output",
+            "label": "Output",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "sine",
+          "output": 0
+        }
+      },
+      {
+        "id": "ac8a42b6-a29d-4205-a8e7-31bbbe16d16c",
+        "position": {
+          "x": -128,
+          "y": -96
+        },
+        "size": {
+          "x": 192,
+          "y": 96
+        },
+        "label": "Constant Number",
+        "ports": [
+          {
+            "id": "value",
+            "label": "Value",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "constant-number",
+          "value": 0,
+          "configuration": {
+            "value": 1
+          }
+        }
+      },
+      {
+        "id": "9d781d2c-180b-45b7-9458-1a7af8adfa59",
+        "position": {
+          "x": -416,
+          "y": -224
+        },
+        "size": {
+          "x": 192,
+          "y": 160
+        },
+        "label": "Multiply",
+        "ports": [
+          {
+            "id": "a",
+            "label": "A",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "b",
+            "label": "B",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "output",
+            "label": "Output",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "multiply",
+          "output": 0
+        }
+      },
+      {
+        "id": "be969683-e2d6-4910-b18c-805dc88ba468",
+        "position": {
+          "x": -416,
+          "y": -480
+        },
+        "size": {
+          "x": 192,
+          "y": 96
+        },
+        "label": "Constant Number",
+        "ports": [
+          {
+            "id": "value",
+            "label": "Value",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "constant-number",
+          "value": 0,
+          "configuration": {
+            "value": 100
+          }
+        }
+      },
+      {
+        "id": "b74f9a74-fc0c-43ed-9a3b-91054873c53d",
+        "position": {
+          "x": -704,
+          "y": -288
+        },
+        "size": {
+          "x": 192,
+          "y": 96
+        },
+        "label": "Time",
+        "ports": [
+          {
+            "id": "output",
+            "label": "Output",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "time",
+          "output": 0
+        }
+      },
+      {
+        "id": "82b646e5-12bb-43bc-ac2a-e3fa869a4283",
+        "position": {
+          "x": -704,
+          "y": -192
+        },
+        "size": {
+          "x": 192,
+          "y": 96
+        },
+        "label": "Constant Number",
+        "ports": [
+          {
+            "id": "value",
+            "label": "Value",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "constant-number",
+          "value": 0,
+          "configuration": {
+            "value": 8
+          }
+        }
+      },
+      {
+        "id": "a32a4d6b-d64a-4574-a8ac-687a87d119bf",
+        "position": {
+          "x": 736,
+          "y": -416
+        },
+        "size": {
+          "x": 352,
+          "y": 224
+        },
+        "label": "Chart",
+        "ports": [
+          {
+            "id": "input",
+            "label": "Input",
+            "type": "input",
+            "side": "left",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          },
+          {
+            "id": "output",
+            "label": "Output",
+            "type": "output",
+            "side": "right",
+            "data": {
+              "type": "number"
+            },
+            "theme": {
+              "portFillColor": "rgba(0, 140, 255, 0.2)",
+              "portHoveredFillColor": "rgba(0, 140, 255, 0.4)",
+              "portBorderColor": "rgba(0, 140, 255, 0.4)",
+              "portHoveredBorderColor": "rgba(0, 140, 255, 0.8)"
+            },
+            "edgeTheme": {
+              "edgeColor": "rgba(0, 140, 255, 0.4)",
+              "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+              "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+            }
+          }
+        ],
+        "resizable": true,
+        "deletable": true,
+        "data": {
+          "type": "chart",
+          "output": 0,
+          "values": [
+            -0.1389034466186347,
+            -0.2795944676774112,
+            -0.3535261311377597,
+            -0.3231015870457705,
+            -0.6174693379855791,
+            -0.7715635217949577,
+            -1.0802016812570783,
+            -0.8720536330907999,
+            -1.1708617415693023,
+            -0.9751405007910235,
+            -0.9877436009222528,
+            -0.8570948120935179,
+            -1.446500966209465,
+            -0.8094669443278558,
+            -0.8975751667091431,
+            -1.0244154310397624,
+            -0.5682659095641651,
+            -0.561915601991701,
+            -0.3627716903827921,
+            -0.3002857308724286,
+            -0.30909090438316716,
+            0.005317677637961371,
+            -0.16438588404320567,
+            0.30447373741117845,
+            -0.06088540673878379,
+            0.41904419782675467,
+            0.4990164350948594,
+            0.3193879909940618,
+            0.5705179429425637,
+            0.952577676511429,
+            0.8445706036073849,
+            0.8630252576577949,
+            0.9650770970477826,
+            1.2364127712874282,
+            1.1880041587198331,
+            1.0934345607021916,
+            0.8391988783638913,
+            0.9425531868621344,
+            0.6433096092454564,
+            0.7177561649350528,
+            0.7635644294756304,
+            0.7645030671700952,
+            0.7605561459940314,
+            0.1544932256181811,
+            0.12641857109908244,
+            0.13541265191037294,
+            0.01553488194614169,
+            -0.17414517963815296,
+            -0.26110784220032446,
+            -0.47363913520933126,
+            -0.6177015639605946,
+            -0.11640522684411991,
+            -0.7174738087209342,
+            -0.7061425959322672,
+            -0.8743859628264369,
+            -0.8207984113412202,
+            -1.2054784839636825,
+            -0.4943206410642962,
+            -0.8929164319054599,
+            -0.8519505369953962,
+            -0.491446131636852,
+            -0.7119907536716663,
+            -0.8400762742501354,
+            -1.0369811547509662
+          ],
+          "configuration": {
+            "maxSize": 64,
+            "yMin": -2,
+            "yMax": 2
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "a": {
+          "nodeId": "82b646e5-12bb-43bc-ac2a-e3fa869a4283",
+          "portId": "value"
+        },
+        "b": {
+          "nodeId": "9d781d2c-180b-45b7-9458-1a7af8adfa59",
+          "portId": "b"
+        },
+        "data": {
+          "value": 8
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "b74f9a74-fc0c-43ed-9a3b-91054873c53d",
+          "portId": "output"
+        },
+        "b": {
+          "nodeId": "9d781d2c-180b-45b7-9458-1a7af8adfa59",
+          "portId": "a"
+        },
+        "data": {
+          "value": 1777820177.846
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "9d781d2c-180b-45b7-9458-1a7af8adfa59",
+          "portId": "output"
+        },
+        "b": {
+          "nodeId": "938fc161-64c2-4d3e-93b0-606836392f75",
+          "portId": "input"
+        },
+        "data": {
+          "value": 14222561422.768
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "ac8a42b6-a29d-4205-a8e7-31bbbe16d16c",
+          "portId": "value"
+        },
+        "b": {
+          "nodeId": "7accc2aa-4824-448e-8ad2-2cd860ff149b",
+          "portId": "b"
+        },
+        "data": {
+          "value": 1
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "938fc161-64c2-4d3e-93b0-606836392f75",
+          "portId": "output"
+        },
+        "b": {
+          "nodeId": "7accc2aa-4824-448e-8ad2-2cd860ff149b",
+          "portId": "a"
+        },
+        "data": {
+          "value": -0.7639571021024218
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "9629c412-ed33-4dc0-a8ea-150b0e6fc112",
+          "portId": "value"
+        },
+        "b": {
+          "nodeId": "bdfbe1cf-0443-4e94-8837-28a1b82a9594",
+          "portId": "seed"
+        },
+        "data": {
+          "value": 0
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "bdfbe1cf-0443-4e94-8837-28a1b82a9594",
+          "portId": "output"
+        },
+        "b": {
+          "nodeId": "80b21f7d-befa-44f2-8d9c-a6f38506ffd6",
+          "portId": "a"
+        },
+        "data": {
+          "value": -0.27302405264854424
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "7accc2aa-4824-448e-8ad2-2cd860ff149b",
+          "portId": "output"
+        },
+        "b": {
+          "nodeId": "80b21f7d-befa-44f2-8d9c-a6f38506ffd6",
+          "portId": "b"
+        },
+        "data": {
+          "value": -0.7639571021024218
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "80b21f7d-befa-44f2-8d9c-a6f38506ffd6",
+          "portId": "output"
+        },
+        "b": {
+          "nodeId": "a32a4d6b-d64a-4574-a8ac-687a87d119bf",
+          "portId": "input"
+        },
+        "data": {
+          "value": -1.0369811547509662
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "b74f9a74-fc0c-43ed-9a3b-91054873c53d",
+          "portId": "output"
+        },
+        "b": {
+          "nodeId": "74c6c7ba-37a2-41b5-9af6-e961078b7995",
+          "portId": "b"
+        },
+        "data": {
+          "value": 1777820177.846
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "be969683-e2d6-4910-b18c-805dc88ba468",
+          "portId": "value"
+        },
+        "b": {
+          "nodeId": "74c6c7ba-37a2-41b5-9af6-e961078b7995",
+          "portId": "a"
+        },
+        "data": {
+          "value": 100
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      },
+      {
+        "a": {
+          "nodeId": "74c6c7ba-37a2-41b5-9af6-e961078b7995",
+          "portId": "output"
+        },
+        "b": {
+          "nodeId": "bdfbe1cf-0443-4e94-8837-28a1b82a9594",
+          "portId": "x"
+        },
+        "data": {
+          "value": 177782017784.6
+        },
+        "theme": {
+          "edgeColor": "rgba(0, 140, 255, 0.4)",
+          "edgeHoveredColor": "rgba(0, 140, 255, 0.7)",
+          "edgeArrowColor": "rgba(0, 140, 255, 0.6)"
+        }
+      }
+    ]
+  },
+  "layout": {
+    "cameraPosition": {
+      "x": 175.49902508729963,
+      "y": -103.84756282869239
+    },
+    "cameraScale": 0.6999999999999993,
+    "selectedNodeId": null
+  }
+}
