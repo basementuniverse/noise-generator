@@ -9,7 +9,10 @@
   },
   "author": "gordon",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@basementuniverse/graph-builder": "^1.2.0",
+    "noisejs": "^2.1.0"
+  },
   "devDependencies": {
     "@types/node": "^18.11.12",
     "clean-webpack-plugin": "^4.0.0-alpha.0",

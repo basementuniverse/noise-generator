@@ -3828,6 +3828,9 @@ function createNewGraphDocument() {
   updateToolbarButtons();
   updateContextMenuButtons();
   updateNoGraphMessage();
+
+  // Show success message
+  E2.Toast.success('New noise graph created!');
 }
 
 async function openGraphDocument() {
@@ -3902,6 +3905,9 @@ async function openGraphDocument() {
   updateToolbarButtons();
   updateContextMenuButtons();
   updateNoGraphMessage();
+
+  // Show success message
+  E2.Toast.success('Noise graph loaded successfully!');
 }
 
 async function saveGraphDocument() {
@@ -3941,6 +3947,9 @@ async function saveGraphDocument() {
   updateDirtyState();
   updateTitle();
   updateToolbarButtons();
+
+  // Show success message
+  E2.Toast.success('Noise graph saved successfully!');
 }
 
 function copySelectedNode() {

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Noise Generator – Runner Test</title>
+  <style>
+    body { font-family: monospace; max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.2rem; }
+    p { color: #555; }
+    textarea {
+      width: 100%; height: 160px; font-family: monospace; font-size: 0.8rem;
+      box-sizing: border-box; border: 1px solid #ccc; padding: 0.5rem;
+    }
+    .toolbar { margin: 0.5rem 0; display: flex; gap: 0.5rem; align-items: center; }
+    button { padding: 0.4rem 1rem; cursor: pointer; }
+    button:disabled { opacity: 0.4; cursor: default; }
+    #status { color: #555; font-size: 0.85rem; }
+    #error { color: #c00; font-size: 0.85rem; min-height: 1.2em; }
+
+    #graph-section { margin-top: 1rem; }
+    canvas {
+      display: block; width: 100%; border: 1px solid #ccc;
+      background: #111;
+    }
+    #legend { margin-top: 0.4rem; display: flex; flex-wrap: wrap; gap: 0.6rem; font-size: 0.8rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.3rem; }
+    .legend-swatch { width: 24px; height: 3px; }
+    #values { margin-top: 0.5rem; font-size: 0.8rem; color: #333; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>Noise Generator – Runner Test</h1>
+  <p>
+    Paste a <strong>compiled program</strong> JSON (output from the Compiler Test or
+    <code>compile()</code>), then use the transport controls to evaluate it.
+  </p>
+
+  <textarea id="input" placeholder='Paste compiled program JSON here…'></textarea>
+
+  <div class="toolbar">
+    <button id="loadBtn">Load</button>
+    <button id="stepBtn"  disabled>Step</button>
+    <button id="playBtn"  disabled>Play</button>
+    <button id="pauseBtn" disabled>Pause</button>
+    <button id="stopBtn"  disabled>Stop</button>
+  </div>
+
+  <div id="error"></div>
+  <div id="status">No program loaded.</div>
+
+  <div id="graph-section">
+    <canvas id="canvas" height="200"></canvas>
+    <div id="legend"></div>
+    <div id="values"></div>
+  </div>
+
+  <script src="build/index.js"></script>
+  <script>
+    // After loading build/index.js the UMD bundle exposes on window:
+    //   NoiseGeneratorRunner  – evaluates a CompiledProgram step by step
+
+    // ---------------------------------------------------------------------------
+    // Config
+    // ---------------------------------------------------------------------------
+    const HISTORY_SAMPLES = 200;   // how many samples to keep in the rolling window
+    const SERIES_COLORS   = ['#4af', '#fa4', '#4f8', '#f48', '#a4f', '#ff4', '#4ff', '#f84'];
+
+    // ---------------------------------------------------------------------------
+    // State
+    // ---------------------------------------------------------------------------
+    let runner   = null;   // NoiseGeneratorRunner instance
+    let program  = null;   // CompiledProgram
+    let series   = [];     // [{ key, color, data: number[] }]
+    let playing  = false;
+    let rafId    = null;
+
+    // ---------------------------------------------------------------------------
+    // DOM references
+    // ---------------------------------------------------------------------------
+    const inputEl  = document.getElementById('input');
+    const errorEl  = document.getElementById('error');
+    const statusEl = document.getElementById('status');
+    const legendEl = document.getElementById('legend');
+    const valuesEl = document.getElementById('values');
+    const canvas   = document.getElementById('canvas');
+    const ctx      = canvas.getContext('2d');
+    const loadBtn  = document.getElementById('loadBtn');
+    const stepBtn  = document.getElementById('stepBtn');
+    const playBtn  = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const stopBtn  = document.getElementById('stopBtn');
+
+    // ---------------------------------------------------------------------------
+    // Helpers
+    // ---------------------------------------------------------------------------
+
+    // Expand a SampleResult output value into named scalar series.
+    // Numbers become a single series; Vec4s become four series (x/y/z/w).
+    function expandOutputs(outputs) {
+      const flat = {};
+      for (const [key, val] of Object.entries(outputs)) {
+        if (typeof val === 'number') {
+          flat[key] = val;
+        } else if (val && typeof val === 'object') {
+          for (const comp of ['x', 'y', 'z', 'w']) {
+            if (comp in val) flat[`${key}.${comp}`] = val[comp];
+          }
+        }
+      }
+      return flat;
+    }
+
+    // Ensure the series array matches the keys coming out of the runner.
+    function syncSeries(flatOutputs) {
+      const keys = Object.keys(flatOutputs);
+      // Add new series for newly seen keys
+      for (const key of keys) {
+        if (!series.find(s => s.key === key)) {
+          const color = SERIES_COLORS[series.length % SERIES_COLORS.length];
+          series.push({ key, color, data: new Array(HISTORY_SAMPLES).fill(NaN) });
+        }
+      }
+    }
+
+    // Push a new frame of values into each series ring buffer.
+    function pushValues(flatOutputs) {
+      for (const s of series) {
+        s.data.push(s.key in flatOutputs ? flatOutputs[s.key] : NaN);
+        if (s.data.length > HISTORY_SAMPLES) s.data.shift();
+      }
+    }
+
+    // Rebuild the legend DOM.
+    function buildLegend() {
+      legendEl.innerHTML = '';
+      for (const s of series) {
+        const item    = document.createElement('div');
+        item.className = 'legend-item';
+        const swatch  = document.createElement('div');
+        swatch.className = 'legend-swatch';
+        swatch.style.background = s.color;
+        const label   = document.createTextNode(s.key);
+        item.appendChild(swatch);
+        item.appendChild(label);
+        legendEl.appendChild(item);
+      }
+    }
+
+    // Update the "current values" text below the canvas.
+    function updateValuesDisplay(flatOutputs) {
+      valuesEl.textContent = Object.entries(flatOutputs)
+        .map(([k, v]) => `${k}: ${v.toFixed(4)}`)
+        .join('   ');
+    }
+
+    // Draw all series onto the canvas.
+    function draw() {
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      if (series.length === 0) return;
+
+      // Auto-scale Y to the visible data range across all series
+      let yMin = Infinity, yMax = -Infinity;
+      for (const s of series) {
+        for (const v of s.data) {
+          if (isFinite(v)) { yMin = Math.min(yMin, v); yMax = Math.max(yMax, v); }
+        }
+      }
+      if (!isFinite(yMin)) { yMin = -1; yMax = 1; }
+      if (yMin === yMax)   { yMin -= 1; yMax += 1; }
+      const yRange = yMax - yMin;
+
+      // Faint zero line
+      const zeroY = H - ((0 - yMin) / yRange) * H;
+      if (zeroY >= 0 && zeroY <= H) {
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, zeroY);
+        ctx.lineTo(W, zeroY);
+        ctx.stroke();
+      }
+
+      // Draw each series
+      for (const s of series) {
+        ctx.strokeStyle = s.color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        let started = false;
+        for (let i = 0; i < s.data.length; i++) {
+          const v = s.data[i];
+          if (!isFinite(v)) { started = false; continue; }
+          const px = (i / (s.data.length - 1)) * W;
+          const py = H - ((v - yMin) / yRange) * H;
+          if (!started) { ctx.moveTo(px, py); started = true; }
+          else           { ctx.lineTo(px, py); }
+        }
+        ctx.stroke();
+      }
+    }
+
+    // Resize canvas backing store to match its CSS width.
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.round(rect.width * devicePixelRatio);
+      canvas.height = Math.round(200 * devicePixelRatio);
+      draw();
+    }
+
+    // Single evaluation step.
+    function step() {
+      if (!runner) return;
+      const result      = runner.sample();
+      const flat        = expandOutputs(result.outputs);
+      syncSeries(flat);
+      pushValues(flat);
+      buildLegend();
+      updateValuesDisplay(flat);
+      draw();
+    }
+
+    // Animation loop for Play mode.
+    function loop() {
+      if (!playing) return;
+      step();
+      rafId = requestAnimationFrame(loop);
+    }
+
+    // ---------------------------------------------------------------------------
+    // Transport controls
+    // ---------------------------------------------------------------------------
+
+    loadBtn.addEventListener('click', () => {
+      errorEl.textContent = '';
+      stopPlayback();
+
+      let parsed;
+      try {
+        parsed = JSON.parse(inputEl.value.trim());
+      } catch (e) {
+        errorEl.textContent = 'JSON parse error: ' + e.message;
+        return;
+      }
+
+      try {
+        runner  = new NoiseGeneratorRunner(parsed);
+        program = parsed;
+        series  = [];
+        buildLegend();
+        draw();
+        statusEl.textContent = `Loaded. ${program.inputs.length} input(s), ${program.outputs.length} output(s).`;
+        stepBtn.disabled  = false;
+        playBtn.disabled  = false;
+        pauseBtn.disabled = true;
+        stopBtn.disabled  = false;
+      } catch (e) {
+        errorEl.textContent = 'Error: ' + e.message;
+        runner = null;
+      }
+    });
+
+    stepBtn.addEventListener('click', () => {
+      if (playing) return;
+      step();
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (!runner || playing) return;
+      playing = true;
+      playBtn.disabled  = true;
+      pauseBtn.disabled = false;
+      stepBtn.disabled  = true;
+      statusEl.textContent = 'Playing…';
+      loop();
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      if (!playing) return;
+      playing = false;
+      cancelAnimationFrame(rafId);
+      playBtn.disabled  = false;
+      pauseBtn.disabled = true;
+      stepBtn.disabled  = false;
+      statusEl.textContent = 'Paused.';
+    });
+
+    stopBtn.addEventListener('click', () => {
+      stopPlayback();
+      if (runner) {
+        runner.reset();
+        series = [];
+        buildLegend();
+        draw();
+        valuesEl.textContent = '';
+        statusEl.textContent = 'Stopped and reset.';
+      }
+    });
+
+    function stopPlayback() {
+      playing = false;
+      cancelAnimationFrame(rafId);
+      if (runner) {
+        playBtn.disabled  = false;
+        pauseBtn.disabled = true;
+        stepBtn.disabled  = false;
+      }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Init
+    // ---------------------------------------------------------------------------
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    draw();
+  </script>
+</body>
+</html>

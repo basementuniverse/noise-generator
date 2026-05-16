@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Noise Generator – Compiler Test</title>
+  <style>
+    body { font-family: monospace; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.2rem; }
+    p { color: #555; }
+    textarea {
+      width: 100%; height: 220px; font-family: monospace; font-size: 0.85rem;
+      box-sizing: border-box; border: 1px solid #ccc; padding: 0.5rem;
+    }
+    .toolbar { margin: 0.5rem 0; display: flex; gap: 0.5rem; align-items: center; }
+    button { padding: 0.4rem 1rem; cursor: pointer; }
+    button:disabled { opacity: 0.4; cursor: default; }
+    #output {
+      white-space: pre-wrap; word-break: break-all;
+      border: 1px solid #ccc; padding: 0.5rem;
+      background: #f8f8f8; min-height: 60px; font-size: 0.8rem;
+      max-height: 400px; overflow-y: auto;
+    }
+    .error { color: #c00; }
+    .ok { color: #060; }
+  </style>
+</head>
+<body>
+  <h1>Noise Generator – Compiler Test</h1>
+  <p>
+    Paste a <strong>graph document</strong> JSON (saved from the editor), click
+    <em>Compile</em>, then optionally <em>Save</em> the compiled output.
+  </p>
+
+  <textarea id="input" placeholder='Paste graph document JSON here, e.g. {"type":"graph-document", ...}'></textarea>
+
+  <div class="toolbar">
+    <button id="compileBtn">Compile</button>
+    <button id="saveBtn" disabled>Save compiled output…</button>
+    <button id="clearBtn">Clear</button>
+  </div>
+
+  <pre id="output">Compiled output will appear here.</pre>
+
+  <script src="build/index.js"></script>
+  <script>
+    // After loading build/index.js the UMD bundle exposes these on window:
+    //   compile(graphDocument)  → CompiledProgram
+    //   CompileError            → error class thrown on invalid graphs
+
+    const inputEl   = document.getElementById('input');
+    const outputEl  = document.getElementById('output');
+    const saveBtn   = document.getElementById('saveBtn');
+    const compileBtn = document.getElementById('compileBtn');
+
+    let lastCompiled = null; // most recent CompiledProgram (or null)
+
+    compileBtn.addEventListener('click', () => {
+      outputEl.className = '';
+      lastCompiled = null;
+      saveBtn.disabled = true;
+
+      let doc;
+      try {
+        doc = JSON.parse(inputEl.value.trim());
+      } catch (e) {
+        outputEl.className = 'error';
+        outputEl.textContent = 'JSON parse error: ' + e.message;
+        return;
+      }
+
+      try {
+        lastCompiled = compile(doc);
+        outputEl.className = 'ok';
+        outputEl.textContent = JSON.stringify(lastCompiled, null, 2);
+        saveBtn.disabled = false;
+      } catch (e) {
+        outputEl.className = 'error';
+        outputEl.textContent = (e instanceof CompileError ? 'CompileError' : 'Error') +
+          ': ' + e.message;
+      }
+    });
+
+    saveBtn.addEventListener('click', () => {
+      if (!lastCompiled) return;
+      const blob = new Blob([JSON.stringify(lastCompiled, null, 2)], { type: 'application/json' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'compiled-program.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      inputEl.value = '';
+      outputEl.className = '';
+      outputEl.textContent = 'Compiled output will appear here.';
+      lastCompiled = null;
+      saveBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>

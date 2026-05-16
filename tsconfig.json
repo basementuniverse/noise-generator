@@ -2,8 +2,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "target": "es2019",
-    "module": "node16",
-    "moduleResolution": "node16",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "allowJs": false,
     "declaration": true,
     "outDir": "./build",
@@ -23,5 +23,5 @@
     "inlineSourceMap": false,
     "sourceMap": false
   },
-  "include": ["index.ts"]
+  "include": ["index.ts", "src/**/*"]
 }
