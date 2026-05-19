@@ -386,7 +386,7 @@ const NODE_TYPES = {
         key: { type: 'string' },
         value: NUMBER_SCHEMA,
       },
-      required: ['value'],
+      required: ['key', 'value'],
     },
     f: (node) => {
       return {
@@ -476,7 +476,17 @@ const NODE_TYPES = {
       data: {
         type: 'output-parameter-number',
         value: 0,
+        configuration: {
+          key: '',
+        },
       },
+    },
+    schema: {
+      type: 'object',
+      properties: {
+        key: { type: 'string' },
+      },
+      required: ['key'],
     },
     f: (node, inputs) => {
       return {
@@ -515,7 +525,17 @@ const NODE_TYPES = {
       data: {
         type: 'output-parameter-vector',
         value: { x: 0, y: 0, z: 0, w: 0 },
+        configuration: {
+          key: '',
+        },
       },
+    },
+    schema: {
+      type: 'object',
+      properties: {
+        key: { type: 'string' },
+      },
+      required: ['key'],
     },
     f: (node, inputs) => {
       return {
@@ -1359,11 +1379,11 @@ const NODE_TYPES = {
       );
       const output = length > 0
         ? {
-            x: input.x / length,
-            y: input.y / length,
-            z: input.z / length,
-            w: input.w / length
-          }
+          x: input.x / length,
+          y: input.y / length,
+          z: input.z / length,
+          w: input.w / length
+        }
         : { x: 0, y: 0, z: 0, w: 0 };
       return { output };
     },
@@ -2807,7 +2827,7 @@ const NODE_TYPES = {
           const isDark =
             (Math.floor((x - (centerX - radius)) / patternSize) +
               Math.floor((y - (centerY - radius)) / patternSize)) %
-              2 ===
+            2 ===
             0;
           context.fillStyle = isDark
             ? 'rgba(180, 180, 180, 1)'
@@ -2871,6 +2891,7 @@ let canvas, context;
 let newToolbarButton,
   openToolbarButton,
   saveToolbarButton,
+  compileToolbarButton,
   undoToolbarButton,
   redoToolbarButton,
   cutToolbarButton,
@@ -2910,7 +2931,11 @@ let cutContextMenuItem,
   deleteNodeContextMenuItem;
 
 // Prompts and dialogs
-let namePrompt, settingsDialog, closeSettingsDialogButton;
+let namePrompt,
+  settingsDialog,
+  closeSettingsDialogButton,
+  compileDialog,
+  closeCompileDialogButton;
 
 // -----------------------------------------------------------------------------
 // Initialization
@@ -2957,6 +2982,7 @@ function initialiseEditor() {
   newToolbarButton = document.getElementById('new-toolbar-button');
   openToolbarButton = document.getElementById('open-toolbar-button');
   saveToolbarButton = document.getElementById('save-toolbar-button');
+  compileToolbarButton = document.getElementById('compile-toolbar-button');
   undoToolbarButton = document.getElementById('undo-toolbar-button');
   redoToolbarButton = document.getElementById('redo-toolbar-button');
   cutToolbarButton = document.getElementById('cut-toolbar-button');
@@ -3000,6 +3026,11 @@ function initialiseEditor() {
   deleteNodeContextMenuItem = document.getElementById(
     'delete-node-context-menu-item'
   );
+  compileDialog = document.getElementById('compile-dialog');
+  closeCompileDialogButton = document.getElementById(
+    'close-compile-dialog-button'
+  );
+  initCompileDialogElements();
 
   // Configure history view
   if (historyView) {
@@ -3022,6 +3053,10 @@ function initialiseEditor() {
   try {
     editorState.graphBuilder = new GraphBuilderClass(canvas, {
       autoStart: true,
+      camera: {
+        minScale: 0.3, 
+        maxScale: 3,
+      },
       canConnectPorts: ({ fromPort, toPort }) => {
         if (
           fromPort.data.type &&
@@ -3189,6 +3224,7 @@ function setupEventListeners() {
     editorState.settings.theme = e.target.checked ? 'dark' : 'light';
     app.setAttribute('theme', editorState.settings.theme);
     settingsDialog.setAttribute('theme', editorState.settings.theme);
+    compileDialog.setAttribute('theme', editorState.settings.theme);
     applyGraphBuilderTheme();
 
     if (NO_GRAPH_MESSAGE) {
@@ -3260,6 +3296,11 @@ function setupEventListeners() {
     settingsDialog?.close();
   });
 
+  closeCompileDialogButton?.addEventListener('click', () => {
+    compileDialogStopPlayback();
+    compileDialog?.close();
+  });
+
   document.addEventListener('keydown', async e => {
     if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'z') {
       e.preventDefault();
@@ -3326,6 +3367,27 @@ async function handleToolbarAction(action) {
       break;
     case 'save':
       await saveGraphDocument();
+      break;
+    case 'compile':
+      openCompileDialog();
+      break;
+    case 'compile-run':
+      compileCurrentGraph();
+      break;
+    case 'compile-save':
+      saveCompiledProgram();
+      break;
+    case 'compile-step':
+      compileDialogStep();
+      break;
+    case 'compile-play':
+      compileDialogPlay();
+      break;
+    case 'compile-pause':
+      compileDialogPause();
+      break;
+    case 'compile-stop':
+      compileDialogStop();
       break;
     case 'undo':
       undo();
@@ -3647,6 +3709,14 @@ function updateToolbarButtons() {
     }
   }
 
+  if (compileToolbarButton) {
+    if (hasGraph) {
+      compileToolbarButton.removeAttribute('disabled');
+    } else {
+      compileToolbarButton.setAttribute('disabled', '');
+    }
+  }
+
   if (undoToolbarButton) {
     if (canUndo()) {
       undoToolbarButton.removeAttribute('disabled');
@@ -3700,6 +3770,22 @@ function updateToolbarButtons() {
       deleteNodeToolbarButton.removeAttribute('disabled');
     } else {
       deleteNodeToolbarButton.setAttribute('disabled', '');
+    }
+  }
+
+  if (snapAllToGridToolbarButton) {
+    if (hasGraph) {
+      snapAllToGridToolbarButton.removeAttribute('disabled');
+    } else {
+      snapAllToGridToolbarButton.setAttribute('disabled', '');
+    }
+  }
+
+  if (resetCameraToolbarButton) {
+    if (hasGraph) {
+      resetCameraToolbarButton.removeAttribute('disabled');
+    } else {
+      resetCameraToolbarButton.setAttribute('disabled', '');
     }
   }
 
@@ -4506,4 +4592,450 @@ function stopPlayback() {
   }
 
   updateToolbarButtons();
+}
+
+// -----------------------------------------------------------------------------
+// Compile dialog
+// -----------------------------------------------------------------------------
+
+const COMPILE_HISTORY_SAMPLES = 200;
+
+const COMPILE_SERIES_COLORS = [
+  '#FA6868', '#71BEA0', '#5A9CB5', '#FAAC68',
+  '#609B8F', '#2C4E80', '#FACE68', '#624E88',
+];
+
+const compileDialogState = {
+  compiled: null,
+  runner: null,
+  series: [],
+  sampleInputs: {},
+  playing: false,
+  rafId: null,
+};
+
+let compileRunButton,
+  compileSaveButton,
+  compileStepButton,
+  compilePlayButton,
+  compilePauseButton,
+  compileStopButton,
+  compileInputEditor,
+  compileErrorEl,
+  compileStatusEl,
+  compileCanvas,
+  compileCanvasCtx,
+  compileLegendEl,
+  compileValuesEl;
+
+function initCompileDialogElements() {
+  compileRunButton = document.getElementById('compile-run-button');
+  compileSaveButton = document.getElementById('compile-save-button');
+  compileStepButton = document.getElementById('compile-step-button');
+  compilePlayButton = document.getElementById('compile-play-button');
+  compilePauseButton = document.getElementById('compile-pause-button');
+  compileStopButton = document.getElementById('compile-stop-button');
+  compileInputEditor = document.getElementById('compile-input-editor');
+  compileErrorEl = document.getElementById('compile-error');
+  compileStatusEl = document.getElementById('compile-status');
+  compileCanvas = document.getElementById('compile-canvas');
+  compileCanvasCtx = compileCanvas?.getContext('2d') ?? null;
+  compileLegendEl = document.getElementById('compile-legend');
+  compileValuesEl = document.getElementById('compile-values');
+
+  compileInputEditor?.addEventListener(
+    'keyvalue-change',
+    handleCompileInputEditorChange
+  );
+}
+
+function openCompileDialog() {
+  compileDialog?.showModal();
+  requestAnimationFrame(() => {
+    drawCompileChart();
+  });
+}
+
+function compileCurrentGraph() {
+  if (!editorState.graphLoaded || !editorState.graphBuilder) {
+    return;
+  }
+
+  const { compile, CompileError, NoiseGeneratorRunner } = window;
+  if (!compile || !NoiseGeneratorRunner) {
+    setCompileError('Compiler library not loaded.');
+    return;
+  }
+
+  compileDialogStopPlayback();
+  clearCompileError();
+
+  const documentData = editorState.graphBuilder.serializeFull();
+  let compiled;
+  try {
+    compiled = compile(documentData);
+  } catch (e) {
+    setCompileError(
+      (CompileError && e instanceof CompileError ? 'CompileError' : 'Error') +
+        ': ' + e.message
+    );
+    compileDialogState.compiled = null;
+    compileDialogState.runner = null;
+    compileDialogState.series = [];
+    syncCompileInputEditor(null);
+    buildCompileLegend();
+    updateCompileDialogButtons();
+    drawCompileChart();
+    return;
+  }
+
+  compileDialogState.compiled = compiled;
+  compileDialogState.runner = new NoiseGeneratorRunner(compiled);
+  compileDialogState.series = [];
+  syncCompileInputEditor(compiled);
+  setCompileStatus(
+    `Compiled. ${compiled.inputs.length} input(s), ${compiled.outputs.length} output(s).`
+  );
+  buildCompileLegend();
+  updateCompileDialogButtons();
+  drawCompileChart();
+}
+
+function saveCompiledProgram() {
+  if (!compileDialogState.compiled) return;
+  const name = `${editorState.graphName || 'noise-graph'}-compiled.json`;
+  downloadTextFile(
+    name,
+    JSON.stringify(compileDialogState.compiled, null, 2),
+    'application/json'
+  );
+}
+
+function compileDialogStep() {
+  if (!compileDialogState.runner) return;
+  const sampleInputs = getCompileSampleInputs();
+
+  let result;
+  try {
+    result = compileDialogState.runner.sample(sampleInputs);
+  } catch (error) {
+    setCompileError(`Runtime error: ${error?.message ?? error}`);
+    compileDialogPause();
+    return;
+  }
+
+  const flat = expandCompileOutputs(result.outputs);
+  syncCompileSeries(flat);
+  pushCompileValues(flat);
+  buildCompileLegend();
+  updateCompileValuesDisplay(flat);
+  drawCompileChart();
+}
+
+function handleCompileInputEditorChange() {
+  if (!compileInputEditor) {
+    compileDialogState.sampleInputs = {};
+    return;
+  }
+
+  compileInputEditor.validate();
+  if (!compileInputEditor.isValid()) {
+    return;
+  }
+
+  compileDialogState.sampleInputs = cloneGraphDocument(
+    compileInputEditor.value || {}
+  );
+}
+
+function getCompileSampleInputs() {
+  if (!compileInputEditor) {
+    return {};
+  }
+
+  compileInputEditor.validate();
+  if (!compileInputEditor.isValid()) {
+    return cloneGraphDocument(compileDialogState.sampleInputs || {});
+  }
+
+  compileDialogState.sampleInputs = cloneGraphDocument(
+    compileInputEditor.value || {}
+  );
+  return cloneGraphDocument(compileDialogState.sampleInputs);
+}
+
+function syncCompileInputEditor(compiled) {
+  if (!compileInputEditor) {
+    compileDialogState.sampleInputs = {};
+    return;
+  }
+
+  if (!compiled || !Array.isArray(compiled.inputs) || compiled.inputs.length === 0) {
+    compileDialogState.sampleInputs = {};
+    compileInputEditor.value = {};
+    compileInputEditor.schema = undefined;
+    return;
+  }
+
+  const properties = {};
+  const required = [];
+  const values = {};
+
+  for (const input of compiled.inputs) {
+    if (!input?.key) {
+      continue;
+    }
+
+    required.push(input.key);
+
+    if (input.valueType === 'vector') {
+      properties[input.key] = {
+        type: 'object',
+        properties: {
+          x: { type: 'number' },
+          y: { type: 'number' },
+          z: { type: 'number' },
+          w: { type: 'number' },
+        },
+        required: ['x', 'y', 'z', 'w'],
+      };
+
+      const value = input.defaultValue || { x: 0, y: 0, z: 0, w: 0 };
+      values[input.key] = {
+        x: Number(value.x ?? 0),
+        y: Number(value.y ?? 0),
+        z: Number(value.z ?? 0),
+        w: Number(value.w ?? 0),
+      };
+      continue;
+    }
+
+    properties[input.key] = {
+      type: 'number',
+    };
+    values[input.key] = Number(input.defaultValue ?? 0);
+  }
+
+  compileDialogState.sampleInputs = cloneGraphDocument(values);
+  compileInputEditor.value = values;
+  compileInputEditor.schema = {
+    type: 'object',
+    properties,
+    required,
+  };
+}
+
+function compileDialogAnimLoop() {
+  if (!compileDialogState.playing) return;
+  compileDialogStep();
+  compileDialogState.rafId = requestAnimationFrame(compileDialogAnimLoop);
+}
+
+function compileDialogPlay() {
+  if (!compileDialogState.runner || compileDialogState.playing) return;
+  compileDialogState.playing = true;
+  updateCompileDialogButtons();
+  compileDialogAnimLoop();
+}
+
+function compileDialogPause() {
+  if (!compileDialogState.playing) return;
+  compileDialogState.playing = false;
+  if (compileDialogState.rafId !== null) {
+    cancelAnimationFrame(compileDialogState.rafId);
+    compileDialogState.rafId = null;
+  }
+  updateCompileDialogButtons();
+}
+
+function compileDialogStopPlayback() {
+  compileDialogState.playing = false;
+  if (compileDialogState.rafId !== null) {
+    cancelAnimationFrame(compileDialogState.rafId);
+    compileDialogState.rafId = null;
+  }
+}
+
+function compileDialogStop() {
+  compileDialogStopPlayback();
+  if (compileDialogState.runner) {
+    compileDialogState.runner.reset();
+  }
+  compileDialogState.series = [];
+  buildCompileLegend();
+  if (compileValuesEl) compileValuesEl.textContent = '';
+  drawCompileChart();
+  updateCompileDialogButtons();
+  if (compileDialogState.compiled) {
+    setCompileStatus(
+      `Stopped. ${compileDialogState.compiled.inputs.length} input(s), ${compileDialogState.compiled.outputs.length} output(s).`
+    );
+  }
+}
+
+function expandCompileOutputs(outputs) {
+  const flat = {};
+  for (const [key, val] of Object.entries(outputs)) {
+    if (typeof val === 'number') {
+      flat[key] = val;
+    } else if (val && typeof val === 'object') {
+      for (const comp of ['x', 'y', 'z', 'w']) {
+        if (comp in val) flat[`${key}.${comp}`] = val[comp];
+      }
+    }
+  }
+  return flat;
+}
+
+function syncCompileSeries(flatOutputs) {
+  for (const key of Object.keys(flatOutputs)) {
+    if (!compileDialogState.series.find(s => s.key === key)) {
+      const color =
+        COMPILE_SERIES_COLORS[
+          compileDialogState.series.length % COMPILE_SERIES_COLORS.length
+        ];
+      compileDialogState.series.push({
+        key,
+        color,
+        data: new Array(COMPILE_HISTORY_SAMPLES).fill(NaN),
+      });
+    }
+  }
+}
+
+function pushCompileValues(flatOutputs) {
+  for (const s of compileDialogState.series) {
+    s.data.push(s.key in flatOutputs ? flatOutputs[s.key] : NaN);
+    if (s.data.length > COMPILE_HISTORY_SAMPLES) s.data.shift();
+  }
+}
+
+function buildCompileLegend() {
+  if (!compileLegendEl) return;
+  compileLegendEl.innerHTML = '';
+  for (const s of compileDialogState.series) {
+    const item = document.createElement('div');
+    item.className = 'compile-legend-item';
+    const swatch = document.createElement('span');
+    swatch.className = 'compile-legend-swatch';
+    swatch.style.background = s.color;
+    item.appendChild(swatch);
+    item.appendChild(document.createTextNode(s.key));
+    compileLegendEl.appendChild(item);
+  }
+}
+
+function updateCompileValuesDisplay(flatOutputs) {
+  if (!compileValuesEl) return;
+  compileValuesEl.textContent = Object.entries(flatOutputs)
+    .map(([k, v]) => `${k}: ${Number.isFinite(v) ? v.toFixed(4) : 'NaN'}`)
+    .join('   ');
+}
+
+function drawCompileChart() {
+  if (!compileCanvas || !compileCanvasCtx) return;
+
+  const rect = compileCanvas.getBoundingClientRect();
+  if (rect.width > 0 && rect.height > 0) {
+    const dpr = window.devicePixelRatio || 1;
+    compileCanvas.width = Math.round(rect.width * dpr);
+    compileCanvas.height = Math.round(rect.height * dpr);
+  }
+
+  compileCanvasCtx.clearRect(0, 0, compileCanvas.width, compileCanvas.height);
+
+  if (compileDialogState.series.length === 0 || !window.drawChart) return;
+
+  const isDark = editorState.settings.theme !== 'light';
+  window.drawChart(compileCanvasCtx, {
+    background: isDark ? '#1a1a1a' : '#f8f8f8',
+    series: compileDialogState.series.map(s => ({
+      name: s.key,
+      color: s.color,
+      data: s.data.map((v, i) => ({ x: i, y: Number.isFinite(v) ? v : null })),
+      width: 1.5,
+      type: 'line',
+    })),
+    xAxis: {
+      show: false,
+      grid: false,
+    },
+    yAxis: {
+      show: true,
+      grid: true,
+      ticks: 5,
+      range: { nice: true, padding: 0.05, includeZero: false },
+    },
+    axisStyle: isDark
+      ? {
+          axisColor: '#555',
+          axisWidth: 1,
+          gridColor: '#333',
+          gridWidth: 1,
+          tickColor: '#555',
+          tickWidth: 1,
+          tickLength: 4,
+          labelColor: '#888',
+          labelFont: '11px sans-serif',
+          labelOffset: 6,
+        }
+      : {
+          axisColor: '#aaa',
+          axisWidth: 1,
+          gridColor: '#ddd',
+          gridWidth: 1,
+          tickColor: '#aaa',
+          tickWidth: 1,
+          tickLength: 4,
+          labelColor: '#555',
+          labelFont: '11px sans-serif',
+          labelOffset: 6,
+        },
+  });
+}
+
+function setCompileError(msg) {
+  if (compileErrorEl) compileErrorEl.textContent = msg;
+  if (compileStatusEl) compileStatusEl.textContent = '';
+}
+
+function clearCompileError() {
+  if (compileErrorEl) compileErrorEl.textContent = '';
+}
+
+function setCompileStatus(msg) {
+  if (compileStatusEl) compileStatusEl.textContent = msg;
+  if (compileErrorEl) compileErrorEl.textContent = '';
+}
+
+function updateCompileDialogButtons() {
+  const hasCompiled = !!compileDialogState.compiled;
+  const hasRunner = !!compileDialogState.runner;
+  const playing = compileDialogState.playing;
+
+  if (compileSaveButton) {
+    hasCompiled
+      ? compileSaveButton.removeAttribute('disabled')
+      : compileSaveButton.setAttribute('disabled', '');
+  }
+  if (compileStepButton) {
+    hasRunner && !playing
+      ? compileStepButton.removeAttribute('disabled')
+      : compileStepButton.setAttribute('disabled', '');
+  }
+  if (compilePlayButton) {
+    hasRunner && !playing
+      ? compilePlayButton.removeAttribute('disabled')
+      : compilePlayButton.setAttribute('disabled', '');
+  }
+  if (compilePauseButton) {
+    playing
+      ? compilePauseButton.removeAttribute('disabled')
+      : compilePauseButton.setAttribute('disabled', '');
+  }
+  if (compileStopButton) {
+    hasRunner
+      ? compileStopButton.removeAttribute('disabled')
+      : compileStopButton.setAttribute('disabled', '');
+  }
 }

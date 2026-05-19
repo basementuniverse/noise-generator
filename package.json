@@ -1,6 +1,6 @@
 {
   "name": "@basementuniverse/noise-generator",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Generate noise, waveforms, and other interesting signals for games and visual effects.",
   "main": "build/index.js",
   "scripts": {

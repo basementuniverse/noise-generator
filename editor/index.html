@@ -10,6 +10,7 @@
     <script src="noise.js"></script>
     <script src="graph-builder.js"></script>
     <script src="utils.min.js"></script>
+    <script src="../build/index.js"></script>
     <script src="editor.js"></script>
   </head>
   <body>
@@ -36,6 +37,13 @@
                 label="Save"
                 icon="💾"
                 action="save"
+                disabled
+              ></e2-toolbar-button>
+              <e2-toolbar-button
+                id="compile-toolbar-button"
+                label="Compile"
+                icon="🛠️"
+                action="compile"
                 disabled
               ></e2-toolbar-button>
               <e2-toolbar-separator></e2-toolbar-separator>
@@ -484,12 +492,6 @@
               ></e2-toolbar-button>
               <e2-toolbar-separator></e2-toolbar-separator>
               <e2-toolbar-button
-                id="compile-button"
-                label="Compile"
-                icon="🛠️"
-                action="compile"
-              ></e2-toolbar-button>
-              <e2-toolbar-button
                 id="settings-button"
                 label="Settings"
                 icon="⚙️"
@@ -560,15 +562,17 @@
               <e2-status-section slot="right" position="right">
                 <e2-toolbar-button
                   id="snap-all-to-grid-toolbar-button"
-                  label="Snap All to Grid"
+                  title="Snap All to Grid"
                   icon="📐"
                   action="snap-all-to-grid"
+                  disabled
                 ></e2-toolbar-button>
                 <e2-toolbar-button
                   id="reset-camera-toolbar-button"
-                  label="Reset Camera"
+                  title="Reset Camera"
                   icon="🎯"
                   action="reset-camera"
+                  disabled
                 ></e2-toolbar-button>
                 <e2-status-item
                   id="camera-status"
@@ -1017,6 +1021,69 @@
           <e2-keyvalue-editor id="settings-editor"></e2-keyvalue-editor>
           <div slot="footer">
             <button id="close-settings-dialog-button">Close</button>
+          </div>
+        </e2-dialog>
+
+        <!-- Compile dialog -->
+        <e2-dialog id="compile-dialog" title="Compile" closable theme="dark">
+          <div id="compile-dialog-content">
+            <e2-toolbar>
+              <e2-toolbar-button
+                id="compile-run-button"
+                label="Compile"
+                icon="⚙️"
+                action="compile-run"
+              ></e2-toolbar-button>
+              <e2-toolbar-button
+                id="compile-save-button"
+                label="Save"
+                icon="💾"
+                action="compile-save"
+                disabled
+              ></e2-toolbar-button>
+              <e2-toolbar-separator></e2-toolbar-separator>
+              <e2-toolbar-button
+                id="compile-step-button"
+                label="Step"
+                icon="⏭️"
+                action="compile-step"
+                disabled
+              ></e2-toolbar-button>
+              <e2-toolbar-button
+                id="compile-play-button"
+                label="Play"
+                icon="▶️"
+                action="compile-play"
+                disabled
+              ></e2-toolbar-button>
+              <e2-toolbar-button
+                id="compile-pause-button"
+                label="Pause"
+                icon="⏸️"
+                action="compile-pause"
+                disabled
+              ></e2-toolbar-button>
+              <e2-toolbar-button
+                id="compile-stop-button"
+                label="Stop"
+                icon="⏹️"
+                action="compile-stop"
+                disabled
+              ></e2-toolbar-button>
+            </e2-toolbar>
+            <e2-keyvalue-editor id="compile-input-editor"></e2-keyvalue-editor>
+            <div id="compile-message-bar">
+              <span id="compile-error"></span>
+              <span id="compile-status">Not compiled.</span>
+            </div>
+            <div id="compile-canvas-container">
+              <canvas id="compile-canvas"></canvas>
+            </div>
+            <div id="compile-legend"></div>
+            <div id="compile-values"></div>
+          </div>
+          <div slot="footer">
+            <button id="close-compile-dialog-button">Close</button>
           </div>
         </e2-dialog>
       </e2-app>

@@ -41,14 +41,14 @@ section.content {
 
 section.content #editor-canvas {
   position: absolute;
+  box-sizing: border-box;
+  outline: none;
+  border: 1px solid transparent;
 }
 
-e2-app[theme="light"] section.content #editor-canvas {
-  border: 1px solid #ccc;
-}
-
-e2-app[theme="dark"] section.content #editor-canvas {
-  border: 1px solid #333;
+section.content #editor-canvas:focus-visible,
+section.content #editor-canvas[data-graph-builder-focused='true'] {
+  border: 1px solid rgba(125, 211, 252, 0.5);
 }
 
 aside.properties {
@@ -81,6 +81,81 @@ footer {
 #settings-editor {
   width: 60vw;
   height: 60vh;
+}
+
+#compile-dialog-content {
+  width: 60vw;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+#compile-input-editor {
+  max-height: 12rem;
+  overflow: auto;
+}
+
+#compile-message-bar {
+  font-family: monospace;
+  font-size: 0.85rem;
+  min-height: 1.4em;
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+#compile-error {
+  color: #c44;
+}
+
+#compile-status {
+  color: #999;
+}
+
+#compile-canvas-container {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+#compile-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  box-sizing: border-box;
+}
+
+#compile-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  font-family: monospace;
+}
+
+.compile-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.compile-legend-swatch {
+  width: 24px;
+  height: 3px;
+  display: inline-block;
+}
+
+#compile-values {
+  font-family: monospace;
+  font-size: 0.8rem;
+  min-height: 1.2em;
+  color: #bbb;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Theme switch */

@@ -754,7 +754,10 @@
         "deletable": true,
         "data": {
           "type": "output-parameter-number",
-          "value": 0
+          "value": 0,
+          "configuration": {
+            "key": "output"
+          }
         }
       },
       {
